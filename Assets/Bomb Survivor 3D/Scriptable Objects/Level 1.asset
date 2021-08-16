@@ -18,4 +18,4 @@ MonoBehaviour:
   - {fileID: 7941458605716810743, guid: 300052c387a22fc48977d73d2f03f3f9, type: 3}
   - {fileID: 7941458605716810743, guid: d357a7ec3debd9c4ba9bfd88d53c4c36, type: 3}
   bombPrefab: {fileID: 1832759995031157261, guid: c9ea58e66bca1b5438e9586cd1207bab, type: 3}
-  bombTimerCount: 7
+  bombTimerCount: 10

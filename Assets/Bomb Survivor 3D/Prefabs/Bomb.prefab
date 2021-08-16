@@ -110,4 +110,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   level: {fileID: 11400000, guid: 1a5b1037fdd32b34ea46fb466ebbc898, type: 2}
   bombTimerPrefab: {fileID: 133588422516267331, guid: a3c5a1fd2f2b6a04aa245ca6260829ab, type: 3}
-  timerCountText: {fileID: 0}
+  gameoverPanel: {fileID: 602535429444717942, guid: 87919b163eecc3940b0825ee1ce74cb8, type: 3}

@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Bomb Survivor 3D/Scenes/Level 1.unity
+    guid: d3690d68fd307154abbb277a87c1f620
   m_configObjects: {}

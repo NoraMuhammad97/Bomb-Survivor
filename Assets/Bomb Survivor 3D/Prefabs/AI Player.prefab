@@ -12,9 +12,11 @@ GameObject:
   - component: {fileID: 7941458605716810736}
   - component: {fileID: 7941458605716810737}
   - component: {fileID: 7941458605716810742}
-  - component: {fileID: -5635241471841595459}
   - component: {fileID: -6489947640400375139}
-  m_Layer: 0
+  - component: {fileID: -9153494350424147920}
+  - component: {fileID: -5635241471841595459}
+  - component: {fileID: -4817651745181820794}
+  m_Layer: 6
   m_Name: AI Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,19 +99,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-5635241471841595459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7941458605716810743}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c0abd13047142c44b17c72fd626e823, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  level: {fileID: 11400000, guid: 1a5b1037fdd32b34ea46fb466ebbc898, type: 2}
 --- !u!54 &-6489947640400375139
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -126,3 +115,54 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!195 &-9153494350424147920
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7941458605716810743}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1
+  m_BaseOffset: 0.5
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &-5635241471841595459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7941458605716810743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c0abd13047142c44b17c72fd626e823, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  level: {fileID: 11400000, guid: 1a5b1037fdd32b34ea46fb466ebbc898, type: 2}
+  collidableLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  isHoldingBomb: 0
+--- !u!114 &-4817651745181820794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7941458605716810743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4cbe03702ec4394badd59701490de2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
