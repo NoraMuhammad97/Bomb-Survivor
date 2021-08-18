@@ -87,6 +87,8 @@ public class Bomb : MonoBehaviour
             CinemachineVirtualCamera vCamera = Instantiate(bombCM).GetComponent<CinemachineVirtualCamera>();
             vCamera.Follow = transform.root;
             vCamera.LookAt = transform.root;
+
+            Invoke("Attack", 2);
         }
         else
         {
@@ -94,10 +96,11 @@ public class Bomb : MonoBehaviour
             if (aiCharacter != null)
             {
                 aiCharacter.StopAI();
+                aiCharacter.DisableAICollision();
+
+                Attack();
             }
         }
-
-        Invoke("Attack", 2);
     }
     void Attack()
     {

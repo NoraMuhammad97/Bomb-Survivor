@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] JoystickController mainPlayer;
     [SerializeField] GameObject         gameoverPanel;
     [SerializeField] GameObject         winPanel;
+    [SerializeField] GameObject         gameplayUI;
     [SerializeField] GameObject[]       AIRandomPlaces;
 
     public List<BombHolder> bombHolderPlayers;
@@ -54,6 +55,8 @@ public class LevelManager : MonoBehaviour
 
         if(bombHolderPlayers.Count == 1 && bombHolderPlayers[playerIndex].CompareTag("Player"))
         {
+            gameplayUI.SetActive(false);
+            DisablePlayersMovement();
             Instantiate(winPanel, GameObject.Find("Canvas").transform, false);
 
             AudioManager.Instance.StopClip(AudioManager.GameClips.Background);
@@ -66,6 +69,8 @@ public class LevelManager : MonoBehaviour
     }
     public void PlayerLoses()
     {
+        gameplayUI.SetActive(false);
+
         Instantiate(gameoverPanel, GameObject.Find("Canvas").transform, false);
         GameIsPaused = true;
     }

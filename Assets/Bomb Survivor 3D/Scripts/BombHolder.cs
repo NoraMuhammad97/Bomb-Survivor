@@ -12,29 +12,30 @@ public class BombHolder : MonoBehaviour
 
     public static GameObject characterHoldingBomb;
 
-    [SerializeField]    LevelSO level;
-    [SerializeField]    State state;
-    [SerializeField]    Transform bombPlace;
-    [SerializeField]    Animator anim;
-    [SerializeField]    Material currentMaterial;
+    [SerializeField]    LevelSO     level;
+    [SerializeField]    State       state;
+    [SerializeField]    Transform   bombPlace;
+    [SerializeField]    Animator    anim;
+    [SerializeField]    Material    currentMaterial;
     [HideInInspector]   public bool isHoldingBomb;
+    [HideInInspector]   public bool canCollide;
     
     float       delay;
     Bomb        levelBomb;
     GameObject  bombGO;
-
     static float lastCollisionTime;
     private void Awake()
     {
         levelBomb = level.bombPrefab;
         lastCollisionTime = Time.time;
+        canCollide = true;
     }
     private void OnCollisionEnter(Collision collision)
     {
         delay = Time.time - lastCollisionTime;
         if (delay >= 1 && collision.gameObject.GetComponent<BombHolder>())
         {
-            if (isHoldingBomb)
+            if (isHoldingBomb && canCollide)
             {
                 DisableBomb();
 

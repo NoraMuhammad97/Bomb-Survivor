@@ -52,6 +52,10 @@ public class AICharacter : MonoBehaviour
         else
             bombHolder.SetState(BombHolder.State.Idle);
     }
+    public void DisableAICollision()
+    {
+        bombHolder.canCollide = false;
+    }
     public void EnableAIMove()
     {
         isStopped = false;
