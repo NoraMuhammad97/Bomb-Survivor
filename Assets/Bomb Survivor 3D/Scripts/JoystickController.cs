@@ -1,19 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerJoystickController : MonoBehaviour
+public class JoystickController : MonoBehaviour
 {
-    [SerializeField] float speed;
-    [SerializeField] FixedJoystick fixedJoystick;
-    [SerializeField] Rigidbody rb;
-    [SerializeField] Animator anim;
+    [SerializeField] float          speed;
+    [SerializeField] FixedJoystick  fixedJoystick;
+    [SerializeField] Rigidbody      rb;
+    [SerializeField] Animator       anim;
+
     private void Start()
     {
         transform.forward = -Vector3.forward;
         //anim.Play("Ninja Idle");
     }
-
     public void FixedUpdate()
     {
         if (!LevelManager.Instance.GameIsPaused)
@@ -34,6 +32,7 @@ public class PlayerJoystickController : MonoBehaviour
         }
     }
 
+    #region Helper Functions
     private void SetPlayerRotation()
     {
         float angle = Mathf.Atan2(fixedJoystick.Horizontal, fixedJoystick.Vertical);
@@ -63,4 +62,5 @@ public class PlayerJoystickController : MonoBehaviour
             }
         }
     }
+    #endregion
 }

@@ -14,14 +14,16 @@ public class UIManager : MonoBehaviour
         else
             Destroy(this);
     }
+    private void OnDestroy()
+    {
+        nextIndex = 0;
+    }
 
+    #region Helper Functions
     public void CollectSoul()
     {
         SoulImages[nextIndex].SetTrigger("Collect");
         nextIndex++;
     }
-    private void OnDestroy()
-    {
-        nextIndex = 0;
-    }
+    #endregion
 }

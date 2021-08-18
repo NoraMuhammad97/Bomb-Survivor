@@ -29,12 +29,6 @@ public class BombHolder : MonoBehaviour
         levelBomb = level.bombPrefab;
         lastCollisionTime = Time.time;
     }
-    public Material GetMaterial() => currentMaterial;
-    public void SetState(State newState)
-    {
-        state = newState;
-        anim.SetTrigger(state.ToString());
-    }
     private void OnCollisionEnter(Collision collision)
     {
         delay = Time.time - lastCollisionTime;
@@ -49,6 +43,18 @@ public class BombHolder : MonoBehaviour
                 lastCollisionTime = Time.time;
             }
         }
+    }
+    private void OnDestroy()
+    {
+        LevelManager.Instance.bombHolderPlayers.Remove(this);
+    }
+
+    #region Helper Functions
+    public Material GetMaterial() => currentMaterial;
+    public void SetState(State newState)
+    {
+        state = newState;
+        anim.SetTrigger(state.ToString());
     }
     public void DisableBomb()
     {
@@ -85,9 +91,5 @@ public class BombHolder : MonoBehaviour
 
         AudioManager.Instance.PlayClip(AudioManager.GameClips.BombPick);
     }
-
-    private void OnDestroy()
-    {
-        LevelManager.Instance.bombHolderPlayers.Remove(this);
-    }
+    #endregion
 }

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -41,9 +40,11 @@ public class AICharacter : MonoBehaviour
             StopAI();
         }
     }
+
+    #region Helper Functions
     public void StopAI()
     {
-        myAgent.Stop();
+        myAgent.isStopped = true;
 
         if (bombHolder.isHoldingBomb)
             bombHolder.SetState(BombHolder.State.IdlewithBomb);
@@ -89,4 +90,5 @@ public class AICharacter : MonoBehaviour
             myAgent.SetDestination(hit.position);
         }
     }
+    #endregion
 }

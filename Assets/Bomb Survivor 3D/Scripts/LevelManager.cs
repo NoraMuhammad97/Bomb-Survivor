@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,14 +5,14 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance;
 
-    [SerializeField] LevelSO level;
-    [SerializeField] PlayerJoystickController mainPlayer;
-    [SerializeField] GameObject gameoverPanel;
-    [SerializeField] GameObject winPanel;
-    [SerializeField] GameObject[] AIRandomPlaces;
+    [SerializeField] LevelSO            level;
+    [SerializeField] JoystickController mainPlayer;
+    [SerializeField] GameObject         gameoverPanel;
+    [SerializeField] GameObject         winPanel;
+    [SerializeField] GameObject[]       AIRandomPlaces;
 
     public List<BombHolder> bombHolderPlayers;
-    public bool GameIsPaused;
+    public bool             GameIsPaused;
 
     GameObject randomAIPrefab;
 
@@ -33,7 +32,12 @@ public class LevelManager : MonoBehaviour
 
         InstantiateBombForRandomPlayer();
     }
+    private void OnDestroy()
+    {
+        bombHolderPlayers.Clear();
+    }
 
+    #region Helper Functions
     void InstantiateRandomAIPlayers()
     {
         bombHolderPlayers.Add(mainPlayer.GetComponent<BombHolder>());
@@ -44,7 +48,6 @@ public class LevelManager : MonoBehaviour
             bombHolderPlayers.Add(Instantiate(randomAIPrefab, AIRandomPlaces[i].transform.position, Quaternion.identity).GetComponent<BombHolder>());
         }
     }
-
     public void InstantiateBombForRandomPlayer()
     {
         int playerIndex = Random.Range(0, bombHolderPlayers.Count);
@@ -66,8 +69,5 @@ public class LevelManager : MonoBehaviour
         Instantiate(gameoverPanel, GameObject.Find("Canvas").transform, false);
         GameIsPaused = true;
     }
-    private void OnDestroy()
-    {
-        bombHolderPlayers.Clear();
-    }
+    #endregion
 }

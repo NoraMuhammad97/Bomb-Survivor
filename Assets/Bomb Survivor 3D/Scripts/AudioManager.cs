@@ -1,26 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
 
-    [Tooltip("Audio Clips")]
+    [Header("Audio Clips")]
     [SerializeField] AudioSource backgroundAudioSource;
     [SerializeField] AudioSource effectsAudioSource;
-    [SerializeField] AudioClip bombPickClip;
-    [SerializeField] AudioClip bombExplodeClip;
-    [SerializeField] AudioClip timerTickingClip;
-    [SerializeField] AudioClip winClip;
-    [SerializeField] AudioClip loseClip;
 
-    [Space]
-    [Tooltip("Audio UI")]
-    [SerializeField] Image audioIcon;
+    [SerializeField] AudioClip  bombPickClip;
+    [SerializeField] AudioClip  bombExplodeClip;
+    [SerializeField] AudioClip  timerTickingClip;
+    [SerializeField] AudioClip  winClip;
+    [SerializeField] AudioClip  loseClip;
+
+    [Space(0)]
+    [Header("Audio UI")]
+    [SerializeField] Image  audioIcon;
     [SerializeField] Sprite musicOn;
     [SerializeField] Sprite musicOff;
-
 
     bool isBGPlaying;
     public enum GameClips
@@ -43,6 +41,7 @@ public class AudioManager : MonoBehaviour
         isBGPlaying = true;
     }
 
+    #region Helper Functions
     public void PlayClip(GameClips clip)
     {
         if(clip == GameClips.Background)
@@ -76,7 +75,6 @@ public class AudioManager : MonoBehaviour
             effectsAudioSource.Play();
         }
     }
-
     public void StopClip(GameClips clip)
     {
         if (clip == GameClips.Background)
@@ -84,7 +82,6 @@ public class AudioManager : MonoBehaviour
         else
             effectsAudioSource.Stop();
     }
-
     public void ToggleBackgroundMusic()
     {
         if (isBGPlaying)
@@ -100,4 +97,5 @@ public class AudioManager : MonoBehaviour
             isBGPlaying = true;
         }
     }
+    #endregion
 }

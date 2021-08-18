@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
@@ -9,9 +8,9 @@ public class Bomb : MonoBehaviour
 {
     public static Bomb currentBomb;
 
-    [SerializeField] LevelSO level;
+    [SerializeField] LevelSO    level;
     [SerializeField] GameObject bombTimerPrefab;
-    [SerializeField] Animator bombAnim;
+    [SerializeField] Animator   bombAnim;
     [SerializeField] GameObject explosionPrefab;
     [SerializeField] GameObject bombCM;
 
@@ -27,6 +26,17 @@ public class Bomb : MonoBehaviour
 
         StartBombTimer();
     }
+    private void OnDestroy()
+    {
+        Destroy(bombTimerGO);
+
+        currentBomb = null;
+
+        if (!LevelManager.Instance.GameIsPaused)
+            LevelManager.Instance.InstantiateBombForRandomPlayer();
+    }
+
+    #region Helper Functions
     void StartBombTimer()
     {
         bombTimerGO = Instantiate(bombTimerPrefab, GameObject.Find("Canvas").transform, false);
@@ -36,7 +46,6 @@ public class Bomb : MonoBehaviour
 
         StartCoroutine(StartCount());
     }
-
     IEnumerator StartCount()
     {
         for (int i = bombTimerCount; i > 0; i--)
@@ -105,13 +114,5 @@ public class Bomb : MonoBehaviour
 
         Destroy(transform.root.gameObject);
     }
-    private void OnDestroy()
-    {
-        Destroy(bombTimerGO);
-
-        currentBomb = null;
-
-        if(!LevelManager.Instance.GameIsPaused)
-            LevelManager.Instance.InstantiateBombForRandomPlayer();
-    }
+    #endregion
 }
