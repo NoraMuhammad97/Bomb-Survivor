@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 410068cb791a7134883bca5da2cd552c
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Arial Rounded MT
+  fontNames:
+  - Arial Rounded MT
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 96a6acebbe3af324589eb3ddb0f92a13, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

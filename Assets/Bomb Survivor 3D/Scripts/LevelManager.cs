@@ -5,16 +5,18 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     public static LevelManager Instance;
+
     [SerializeField] LevelSO level;
     [SerializeField] PlayerJoystickController mainPlayer;
-    [SerializeField] GameObject WinPanel;
+    [SerializeField] GameObject gameoverPanel;
+    [SerializeField] GameObject winPanel;
     [SerializeField] GameObject[] AIRandomPlaces;
 
-    public static List<BombHolder> bombHolderPlayers;
-    public bool GameIsOver;
+    public List<BombHolder> bombHolderPlayers;
+    public bool GameIsPaused;
+
     GameObject randomAIPrefab;
 
-    //GameObject AIParent; //in hierarchy
     private void Awake()
     {
         if (!Instance)
@@ -23,6 +25,7 @@ public class LevelManager : MonoBehaviour
             Destroy(this);
 
         bombHolderPlayers = new List<BombHolder>();
+        GameIsPaused = true;
     }
     private void Start()
     {
@@ -48,11 +51,23 @@ public class LevelManager : MonoBehaviour
 
         if(bombHolderPlayers.Count == 1 && bombHolderPlayers[playerIndex].CompareTag("Player"))
         {
-            Instantiate(WinPanel, GameObject.Find("Canvas").transform, false);
+            Instantiate(winPanel, GameObject.Find("Canvas").transform, false);
+
+            AudioManager.Instance.StopClip(AudioManager.GameClips.Background);
+            AudioManager.Instance.PlayClip(AudioManager.GameClips.Win);
         }
         else if (bombHolderPlayers.Count > 0)
         {
             bombHolderPlayers[playerIndex].HoldBomb();
         }
+    }
+    public void PlayerLoses()
+    {
+        Instantiate(gameoverPanel, GameObject.Find("Canvas").transform, false);
+        GameIsPaused = true;
+    }
+    private void OnDestroy()
+    {
+        bombHolderPlayers.Clear();
     }
 }

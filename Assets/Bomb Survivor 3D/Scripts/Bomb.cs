@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
+using Cinemachine;
 
 public class Bomb : MonoBehaviour
 {
@@ -9,10 +11,14 @@ public class Bomb : MonoBehaviour
 
     [SerializeField] LevelSO level;
     [SerializeField] GameObject bombTimerPrefab;
-    [SerializeField] GameObject gameoverPanel;
+    [SerializeField] Animator bombAnim;
+    [SerializeField] GameObject explosionPrefab;
+    [SerializeField] GameObject bombCM;
+
+    int             bombTimerCount;
+    Animator        bombTimerCountAnim;
     TextMeshProUGUI timerCountText;
-    int bombTimerCount;
-    GameObject bombTimerGO;
+    GameObject      bombTimerGO;
     private void Awake()
     {
         currentBomb = this;
@@ -24,7 +30,9 @@ public class Bomb : MonoBehaviour
     void StartBombTimer()
     {
         bombTimerGO = Instantiate(bombTimerPrefab, GameObject.Find("Canvas").transform, false);
+        bombTimerCountAnim = bombTimerGO.GetComponent<Animator>();
         timerCountText = bombTimerGO.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
+
 
         StartCoroutine(StartCount());
     }
@@ -33,24 +41,69 @@ public class Bomb : MonoBehaviour
     {
         for (int i = bombTimerCount; i > 0; i--)
         {
-            timerCountText.text = i.ToString();
-
             yield return new WaitForSeconds(1);
+
+            TimeSpan time = TimeSpan.FromSeconds(i);
+            timerCountText.text = time.ToString(@"mm\:ss");
+
+            if (i <= 10)
+            {
+                AudioManager.Instance.PlayClip(AudioManager.GameClips.TimerTicking);
+                bombTimerCountAnim.SetTrigger("ScaleCount");
+            }
         }
 
         Explode();
         yield return null;
     }
-
+    public void StartAttack()
+    {
+        AudioManager.Instance.PlayClip(AudioManager.GameClips.BombExplode);
+    }
     void Explode()
     {
-        if (transform.parent.gameObject.CompareTag("Player"))
+        if (transform.root.gameObject.CompareTag("Player"))
         {
-            Instantiate(gameoverPanel, GameObject.Find("Canvas").transform, false);
-            LevelManager.Instance.GameIsOver = true;
-        }    
+            transform.root.forward = -Vector3.forward;
+            LevelManager.Instance.GameIsPaused = true;
 
-        Destroy(transform.parent.gameObject);
+            AudioManager.Instance.StopClip(AudioManager.GameClips.Background);
+            AudioManager.Instance.PlayClip(AudioManager.GameClips.Lose);
+
+            CinemachineVirtualCamera vCamera = Instantiate(bombCM).GetComponent<CinemachineVirtualCamera>();
+            vCamera.Follow = transform.root;
+            vCamera.LookAt = transform.root;
+        }
+        else
+        {
+            AICharacter aiCharacter = transform.root.GetComponent<AICharacter>();
+            if (aiCharacter != null)
+            {
+                aiCharacter.StopAI();
+            }
+        }
+
+        Invoke("Attack", 2);
+    }
+    void Attack()
+    {
+        bombAnim.SetTrigger("attack");
+    }
+    public void DestroyGO()
+    {
+        explosionPrefab.GetComponent<ParticleSystemRenderer>().material = transform.root.GetComponent<BombHolder>().GetMaterial();
+        Destroy(Instantiate(explosionPrefab, transform.parent.position, Quaternion.identity), 1);
+
+        if (transform.root.gameObject.CompareTag("Player"))
+        {
+            LevelManager.Instance.PlayerLoses();
+        }
+        else
+        {
+            UIManager.Instance.CollectSoul();
+        }
+
+        Destroy(transform.root.gameObject);
     }
     private void OnDestroy()
     {
@@ -58,7 +111,7 @@ public class Bomb : MonoBehaviour
 
         currentBomb = null;
 
-        if(!LevelManager.Instance.GameIsOver)
+        if(!LevelManager.Instance.GameIsPaused)
             LevelManager.Instance.InstantiateBombForRandomPlayer();
     }
 }

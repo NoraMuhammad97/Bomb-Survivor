@@ -1,29 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BombHolder : MonoBehaviour
 {
+    public enum State
+    {
+        Idle,
+        IdlewithBomb,
+        Running,
+        RunningwithBomb
+    }
+
     public static GameObject characterHoldingBomb;
 
-    [SerializeField] LevelSO level;
+    [SerializeField]    LevelSO level;
+    [SerializeField]    State state;
+    [SerializeField]    Transform bombPlace;
+    [SerializeField]    Animator anim;
+    [SerializeField]    Material currentMaterial;
+    [HideInInspector]   public bool isHoldingBomb;
+    
+    float       delay;
+    Bomb        levelBomb;
+    GameObject  bombGO;
 
-    [HideInInspector] public bool isHoldingBomb;
-    Bomb levelBomb;
-    GameObject bombGO;
-
+    static float lastCollisionTime;
     private void Awake()
     {
         levelBomb = level.bombPrefab;
+        lastCollisionTime = Time.time;
+    }
+    public Material GetMaterial() => currentMaterial;
+    public void SetState(State newState)
+    {
+        state = newState;
+        anim.SetTrigger(state.ToString());
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.GetComponent<BombHolder>())
+        delay = Time.time - lastCollisionTime;
+        if (delay >= 2 && collision.gameObject.GetComponent<BombHolder>())
         {
             if (isHoldingBomb)
             {
                 DisableBomb();
+
                 collision.gameObject.GetComponent<BombHolder>().HoldBomb();
+
+                lastCollisionTime = Time.time;
             }
         }
     }
@@ -31,8 +54,11 @@ public class BombHolder : MonoBehaviour
     {
         if (bombGO)
         {
-            //Destroy(bombGO);
             isHoldingBomb = false;
+
+            if (state == State.IdlewithBomb) state = State.Idle;
+            else if (state == State.RunningwithBomb) state = State.Running;
+            anim.SetTrigger(state.ToString());
         }
 
     }
@@ -40,27 +66,28 @@ public class BombHolder : MonoBehaviour
     {
         if (!Bomb.currentBomb)
         {
-            bombGO = Instantiate(levelBomb.gameObject, transform, false);
+            bombGO = Instantiate(levelBomb.gameObject, bombPlace, false);
         }
         else
         {
             bombGO = Bomb.currentBomb.gameObject;
-            bombGO.transform.SetParent(transform, false);
+            bombGO.transform.SetParent(bombPlace, false);
         }
 
-        bombGO.transform.localPosition = Vector3.zero + transform.up;
+        bombGO.transform.localPosition = Vector3.zero;
 
-        Invoke("SetHoldingBomb", 0.5f);
-        characterHoldingBomb = gameObject;
-    }
+        if (state == State.Idle) state = State.IdlewithBomb;
+        else if (state == State.Running) state = State.RunningwithBomb;
+        anim.SetTrigger(state.ToString());
 
-    void SetHoldingBomb()
-    {
         isHoldingBomb = true;
+        characterHoldingBomb = gameObject;
+
+        AudioManager.Instance.PlayClip(AudioManager.GameClips.BombPick);
     }
 
     private void OnDestroy()
     {
-        LevelManager.bombHolderPlayers.Remove(this);
+        LevelManager.Instance.bombHolderPlayers.Remove(this);
     }
 }
