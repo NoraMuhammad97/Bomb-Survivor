@@ -16,4 +16,4 @@ MonoBehaviour:
   AIPrefabs:
   - {fileID: 7248378111144674087, guid: dedf6e15a6faebb49bc002dba1a25eb2, type: 3}
   bombPrefab: {fileID: 2070903087409121274, guid: 24730e782809f1c46a2e812744d13a56, type: 3}
-  bombTimerCount: 15
+  bombTimerCount: 20

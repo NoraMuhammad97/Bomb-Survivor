@@ -48,11 +48,13 @@ public class Bomb : MonoBehaviour
     }
     IEnumerator StartCount()
     {
-        for (int i = bombTimerCount; i > 0; i--)
+        TimeSpan time;
+        int i;
+        for (i = bombTimerCount; i > 0; i--)
         {
             yield return new WaitForSeconds(1);
 
-            TimeSpan time = TimeSpan.FromSeconds(i);
+            time = TimeSpan.FromSeconds(i);
             timerCountText.text = time.ToString(@"mm\:ss");
 
             if (i <= 10)
@@ -61,6 +63,9 @@ public class Bomb : MonoBehaviour
                 bombTimerCountAnim.SetTrigger("ScaleCount");
             }
         }
+
+        time = TimeSpan.FromSeconds(i);
+        timerCountText.text = time.ToString(@"mm\:ss");
 
         Explode();
         yield return null;
@@ -74,7 +79,7 @@ public class Bomb : MonoBehaviour
         if (transform.root.gameObject.CompareTag("Player"))
         {
             transform.root.forward = -Vector3.forward;
-            LevelManager.Instance.GameIsPaused = true;
+            LevelManager.Instance.DisablePlayersMovement();
 
             AudioManager.Instance.StopClip(AudioManager.GameClips.Background);
             AudioManager.Instance.PlayClip(AudioManager.GameClips.Lose);

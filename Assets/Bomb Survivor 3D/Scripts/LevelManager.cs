@@ -69,5 +69,29 @@ public class LevelManager : MonoBehaviour
         Instantiate(gameoverPanel, GameObject.Find("Canvas").transform, false);
         GameIsPaused = true;
     }
+    public void EnablePlayersMovement()
+    {
+        GameIsPaused = false;
+        for (int i = 0; i < bombHolderPlayers.Count; i++)
+        {
+            AICharacter aiCharacter = bombHolderPlayers[i].GetComponent<AICharacter>();
+            if(aiCharacter != null)
+            {
+                aiCharacter.EnableAIMove();
+            }
+        }
+    }
+    public void DisablePlayersMovement()
+    {
+        GameIsPaused = true;
+        for (int i = 0; i < bombHolderPlayers.Count; i++)
+        {
+            AICharacter aiCharacter = bombHolderPlayers[i].GetComponent<AICharacter>();
+            if (aiCharacter != null)
+            {
+                aiCharacter.StopAI();
+            }
+        }
+    }
     #endregion
 }

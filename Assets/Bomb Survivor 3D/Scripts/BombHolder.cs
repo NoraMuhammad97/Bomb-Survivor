@@ -32,7 +32,7 @@ public class BombHolder : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         delay = Time.time - lastCollisionTime;
-        if (delay >= 2 && collision.gameObject.GetComponent<BombHolder>())
+        if (delay >= 1 && collision.gameObject.GetComponent<BombHolder>())
         {
             if (isHoldingBomb)
             {

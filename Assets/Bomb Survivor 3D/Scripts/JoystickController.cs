@@ -14,11 +14,12 @@ public class JoystickController : MonoBehaviour
     }
     public void FixedUpdate()
     {
+        Vector3 direction;
         if (!LevelManager.Instance.GameIsPaused)
         {
             SetPlayerRotation();
 
-            Vector3 direction = transform.forward * fixedJoystick.Vertical + transform.right * fixedJoystick.Horizontal;
+            direction = transform.forward * fixedJoystick.Vertical + transform.right * fixedJoystick.Horizontal;
             if (direction.sqrMagnitude != 0)
                 rb.AddForce(direction * speed * Time.fixedDeltaTime, ForceMode.VelocityChange);
             else
@@ -28,7 +29,9 @@ public class JoystickController : MonoBehaviour
         }
         else
         {
-            rb.velocity = Vector3.zero;
+            direction = Vector3.zero;
+            rb.velocity = direction;
+            SetPlayerAnimationState(direction);
         }
     }
 

@@ -35,7 +35,7 @@ public class AICharacter : MonoBehaviour
                 }
             }
         }
-        else
+        else if(LevelManager.Instance.GameIsPaused || isStopped)
         {
             StopAI();
         }
@@ -44,12 +44,17 @@ public class AICharacter : MonoBehaviour
     #region Helper Functions
     public void StopAI()
     {
+        isStopped = true;
         myAgent.isStopped = true;
 
         if (bombHolder.isHoldingBomb)
             bombHolder.SetState(BombHolder.State.IdlewithBomb);
         else
             bombHolder.SetState(BombHolder.State.Idle);
+    }
+    public void EnableAIMove()
+    {
+        isStopped = false;
     }
     void SeekNearestPlayer()
     {
